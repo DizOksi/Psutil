@@ -14,8 +14,10 @@ def write_to_file(file_format):
             elif file_format == 'csv':
                 with open("processes_table.csv", "w", newline='') as file:
                     csv_write = csv.writer(file)
+                    header = table[0].keys()
+                    csv_write.writerow(header)
                     for row in table:
-                        csv_write.writerow(row)
+                        csv_write.writerow(row.values())
                 print('Таблица с информацией о процессах была успешно записана в файл "processes_table.csv".')
             else:
                 print('Формат файла не поддерживается. Выберите "json" или "csv".')

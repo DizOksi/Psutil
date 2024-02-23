@@ -47,7 +47,7 @@ def get_mem():
     #     i += 1
     #     if i == 30:
     #         break
-
+@write_to_file(file_format="csv")
 def get_processes_info():
     processes_info = []
     for process in psutil.process_iter(['pid', 'name', 'username', 'ppid']):
@@ -88,7 +88,7 @@ def get_max_lengths(processes_info):
     max_ppid_length = max(len(str(info['ppid'])) for info in processes_info) + 2
     return max_name_length, max_username_length, max_pid_length, max_ppid_length
 
-@write_to_file(file_format='json')
+#@write_to_file(file_format='json')
 def display_processes_table():
     processes_info = get_processes_info()
     max_name_length, max_username_length, max_pid_length, max_ppid_length = get_max_lengths(processes_info)
@@ -98,7 +98,10 @@ def display_processes_table():
     table += f"+{'-' * (max_name_length)}+{'-' * (max_username_length)}+{'-' * (max_pid_length)}+{'-' * (max_ppid_length)}+\n"
 
     for info in processes_info[:30]:
-        table += f"| {info['name']:<{max_name_length-1}}| {info['username']:<{max_username_length-1}}| {info['pid']:<{max_pid_length-1}}| {info['ppid']:<{max_ppid_length-1}}|\n"
+        table += (
+            f"| {info['name']:<{max_name_length-1}}| {info['username']:<{max_username_length-1}}|"
+            f" {info['pid']:<{max_pid_length-1}}| {info['ppid']:<{max_ppid_length-1}}|\n"
+        )
 
     table += f"+{'=' * (max_name_length)}+{'=' * (max_username_length)}+{'=' * (max_pid_length)}+{'=' * (max_ppid_length)}+\n"
     print(table)
